@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+}
+
+.calculator{
+    width:390px;
+    background:#1c1c1c;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 0 20px rgba(0,0,0,.5);
+}
+
+.header{
+    color:#fff;
+    padding:15px;
+    font-size:30px;
+    font-weight:600;
+}
+
+.display{
+    height:120px;
+    background:#121212;
+    color:white;
+    font-size:60px;
+    text-align:right;
+    padding:20px;
+    display:flex;
+    justify-content:flex-end;
+    align-items:flex-end;
+    overflow:hidden;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:2px;
+    background:#1c1c1c;
+}
+
+button{
+    height:70px;
+    border:none;
+    background:#2b2f33;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+button:hover{
+    background:#3a3f45;
+}
+
+.operator{
+    background:#25292d;
+}
+
+.equal{
+    background:#4dbdf4;
+    color:white;
+}
+
+.equal:hover{
+    background:#36aee8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+    <div class="header">Standard</div>
+
+    <div class="display" id="display">0</div>
+
+    <div class="buttons">
+
+        <button onclick="percentage()">%</button>
+        <button onclick="clearEntry()">CE</button>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="backspace()">⌫</button>
+
+        <button onclick="append('7')">7</button>
+        <button onclick="append('8')">8</button>
+        <button onclick="append('9')">9</button>
+        <button class="operator" onclick="append('*')">×</button>
+
+        <button onclick="append('4')">4</button>
+        <button onclick="append('5')">5</button>
+        <button onclick="append('6')">6</button>
+        <button class="operator" onclick="append('-')">−</button>
+
+        <button onclick="append('1')">1</button>
+        <button onclick="append('2')">2</button>
+        <button onclick="append('3')">3</button>
+        <button class="operator" onclick="append('+')">+</button>
+
+        <button onclick="toggleSign()">±</button>
+        <button onclick="append('0')">0</button>
+        <button onclick="append('.')">.</button>
+        <button class="equal" onclick="calculate()">=</button>
+
+    </div>
+</div>
+
+<script>
+const display = document.getElementById("display");
+
+function append(value){
+    if(display.innerText === "0" || display.innerText === "Error"){
+        display.innerText = value;
+    } else {
+        display.innerText += value;
+    }
+}
+
+function clearDisplay(){
+    display.innerText = "0";
+}
+
+function clearEntry(){
+    display.innerText = "0";
+}
+
+function backspace(){
+    let text = display.innerText;
+
+    if(text.length > 1){
+        display.innerText = text.slice(0,-1);
+    }else{
+        display.innerText = "0";
+    }
+}
+
+function calculate(){
+    try{
+        let result = eval(display.innerText);
+        display.innerText = result;
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+function percentage(){
+    try{
+        display.innerText = eval(display.innerText) / 100;
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+function square(){
+    try{
+        let num = eval(display.innerText);
+        display.innerText = num * num;
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+function sqrt(){
+    try{
+        let num = eval(display.innerText);
+        display.innerText = Math.sqrt(num);
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+function reciprocal(){
+    try{
+        let num = eval(display.innerText);
+        display.innerText = 1 / num;
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+function toggleSign(){
+    try{
+        let num = eval(display.innerText);
+        display.innerText = num * -1;
+    }
+    catch{
+        display.innerText = "Error";
+    }
+}
+
+// Keyboard support
+document.addEventListener("keydown",(e)=>{
+    if("0123456789+-*/.".includes(e.key)){
+        append(e.key);
+    }
+    else if(e.key === "Enter"){
+        calculate();
+    }
+    else if(e.key === "Backspace"){
+        backspace();
+    }
+    else if(e.key === "Escape"){
+        clearDisplay();
+    }
+});
+</script>
+
+</body>
+</html>
